@@ -1,0 +1,6 @@
+applicationType: default
+defaultPackage: com.dgs.advertisingdata
+testFramework: kotlintest
+sourceLanguage: kotlin
+buildTool: gradle
+features: [annotation-api, app-name, docker, file-watch, flyway, gradle, h2, http-client, jackson-xml, jdbc-hikari, kotlin, kotlin-application, kotlin-extension-functions, kotlintest, log4j2, netty-server, readme, shade, sql-jdbi, yaml]
