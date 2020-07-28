@@ -1,37 +1,32 @@
-package com.dgs.advertisingdata.schdulers
+package com.dgs.advertisingdata.services
 
 import com.dgs.advertisingdata.models.db.AdvertisingCampaign
 import com.dgs.advertisingdata.models.db.AdvertisingDataSource
 import com.dgs.advertisingdata.models.db.AdvertisingSample
-import com.dgs.advertisingdata.services.AdvertisingService
-import com.dgs.advertisingdata.services.CsvParserService
-import com.dgs.advertisingdata.services.DownloadService
 import io.micronaut.context.annotation.Property
-import io.micronaut.scheduling.annotation.Scheduled
 import org.slf4j.LoggerFactory
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Singleton
 
 @Singleton
-class DownloadScheduler constructor(
-    private val downloadService: DownloadService,
+class AdvertisingCsvImportService constructor(
+    private val downloadFileService: DownloadFileService,
     private val csvParserService: CsvParserService,
-    private val advertisingService: AdvertisingService,
+    private val advertisingDataService: AdvertisingDataService,
     @Property(name = "advertising-data-source.uri") private val fileUri: String
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
-
-    @Scheduled(initialDelay = "5s")
-    internal fun downloadAdvertisingCsvFile() {
+    
+    fun downloadAdvertisingCsvFile() {
         var skippedLines = 0
         var importedLines = 0
         
         log.info("Downloading {}", fileUri)
         
-        downloadService.downloadFile(fileUri).subscribe par@{ csvData ->
+        downloadFileService.downloadFile(fileUri).subscribe par@{ csvData ->
             log.info("Parsing csv file...")
-    
+            
             val csvDatePattern = DateTimeFormatter.ofPattern("dd.MM.yyyy")
             
             csvParserService.parse(csvData) { line, data ->
@@ -43,19 +38,19 @@ class DownloadScheduler constructor(
                     val csvImpressions = data["Impressions"]
                     
                     if (csvDataSource != null && csvCampaign != null && csvDate != null && csvClicks != null && csvImpressions != null) {
-    
-                        val dataSource = advertisingService.saveDataSource(
+                        
+                        val dataSource = advertisingDataService.saveDataSource(
                             AdvertisingDataSource(name = csvDataSource, id = 0)
                         )
-                        val campaign = advertisingService.saveCampaign(
+                        val campaign = advertisingDataService.saveCampaign(
                             AdvertisingCampaign(name = csvCampaign, id = 0, dataSourceId = dataSource.id)
                         )
                         val sampleDate = LocalDate.parse(csvDate, csvDatePattern)
                         
                         val clicks = if (csvClicks.isEmpty()) 0 else csvClicks.toInt()
                         val impressions = if (csvImpressions.isEmpty()) 0 else csvImpressions.toInt()
-    
-                        advertisingService.saveSample(
+                        
+                        advertisingDataService.saveSample(
                             AdvertisingSample(
                                 0,
                                 sampleDate,
@@ -76,7 +71,7 @@ class DownloadScheduler constructor(
                     skippedLines += 1
                 }
             }
-
+            
             log.info("Imported {} lines, skipped {}", importedLines, skippedLines)
         }
     }

@@ -6,7 +6,7 @@ import io.reactivex.Maybe
 import javax.inject.Singleton
 
 @Singleton
-class DownloadService constructor(
+class DownloadFileService constructor(
     private val httpClient: RxStreamingHttpClient
 ) {
     fun downloadFile(fileUri: String): Maybe<String> {

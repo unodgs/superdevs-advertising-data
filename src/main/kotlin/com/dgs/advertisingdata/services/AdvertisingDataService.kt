@@ -16,7 +16,7 @@ import java.time.ZoneOffset
 import javax.inject.Singleton
 
 @Singleton
-class AdvertisingService constructor(dbConfig: DbConfig) {
+class AdvertisingDataService constructor(dbConfig: DbConfig) {
     private val db = dbConfig.jdbi
     private val log = LoggerFactory.getLogger(javaClass)
 
