@@ -19,7 +19,7 @@ ReactDOM.render(
         <App
             services={services}
             queryConfig={queryConfig}
-        />,
+        />
     </React.StrictMode>,
     document.getElementById('root')
 );

@@ -1,0 +1,14 @@
+@import "../../../styles/theme";
+
+header.app-header {
+  height: $headerHeight;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #669d6b;
+  padding-left: 24px;
+
+  h2 {
+    color: #ffffff;
+  }
+}
