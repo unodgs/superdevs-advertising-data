@@ -42,8 +42,8 @@ class AdvertisingDataService constructor(dbConfig: DbConfig) {
         return db.onDemand<AdvertisingDataSourceRepository>().findAll()
     }
     
-    fun getCampaigns(dataSourceId: Long): List<AdvertisingCampaign> {
-        return db.onDemand<AdvertisingCampaignRepository>().findAllByDataSource(dataSourceId)
+    fun getCampaigns(dataSourceIds: List<Long>): List<AdvertisingCampaign> {
+        return db.onDemand<AdvertisingCampaignRepository>().findAllByDataSources(dataSourceIds)
     }
     
     fun getDataSamples(campaignIds: List<Long>): List<DateSampleDto> {

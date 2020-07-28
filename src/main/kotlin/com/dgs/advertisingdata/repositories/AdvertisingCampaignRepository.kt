@@ -3,6 +3,7 @@ package com.dgs.advertisingdata.repositories
 import com.dgs.advertisingdata.models.db.AdvertisingCampaign
 import com.dgs.advertisingdata.models.db.AdvertisingDataSource
 import org.jdbi.v3.sqlobject.config.RegisterConstructorMapper
+import org.jdbi.v3.sqlobject.customizer.BindList
 import org.jdbi.v3.sqlobject.statement.SqlQuery
 import org.jdbi.v3.sqlobject.statement.SqlUpdate
 
@@ -14,9 +15,14 @@ interface AdvertisingCampaignRepository {
     @RegisterConstructorMapper(AdvertisingCampaign::class)
     fun findByName(name: String): AdvertisingCampaign?
 
-    @SqlQuery("select id, data_source_id, name from advertising_campaign where data_source_id = :dataSourceId order by name")
+    @SqlQuery("""
+        select id, data_source_id, name
+          from advertising_campaign
+         where data_source_id in (<dataSourceIds>)
+      order by name
+    """)
     @RegisterConstructorMapper(AdvertisingCampaign::class)
-    fun findAllByDataSource(dataSourceId: Long): List<AdvertisingCampaign>
+    fun findAllByDataSources(@BindList("dataSourceIds") dataSourceIds: List<Long>): List<AdvertisingCampaign>
 
     @SqlQuery("select id, data_source_id, name from advertising_campaign order by name")
     @RegisterConstructorMapper(AdvertisingCampaign::class)

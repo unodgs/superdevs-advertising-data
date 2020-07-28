@@ -1,6 +1,7 @@
 micronaut:
   application:
     name: advertisingData
+  
   server:
     port: 8085
 

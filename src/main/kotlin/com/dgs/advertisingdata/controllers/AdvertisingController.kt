@@ -21,9 +21,9 @@ class AdvertisingController(
         }
     }
 
-    @Get("/campaigns/{dataSourceId}", produces = [MediaType.APPLICATION_JSON])
-    fun getCampaigns(@QueryValue dataSourceId: Long): List<CampaignDto> {
-        return advertisingDataService.getCampaigns(dataSourceId).map {
+    @Get("/campaigns", produces = [MediaType.APPLICATION_JSON])
+    fun getCampaigns(@QueryValue dataSourceIds: List<Long>): List<CampaignDto> {
+        return advertisingDataService.getCampaigns(dataSourceIds).map {
             CampaignDto(it.id, it.name)
         }
     }
