@@ -3,9 +3,9 @@ package com.dgs.advertisingdata.model
 import java.time.LocalDate
 
 data class AdvertisingSample(
-    val createdAt: LocalDate,
-    val campaign: AdvertisingCampaign,
+    val sampleDate: LocalDate,
     val dataSource: AdvertisingDataSource,
+    val campaign: AdvertisingCampaign,
     val clicks: Int,
     val impressions: Int
 )

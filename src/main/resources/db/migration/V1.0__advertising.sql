@@ -15,6 +15,7 @@ create table advertising_campaign
 create table advertising_sample
 (
     id bigint auto_increment not null primary key,
+    sample_date date not null,
     data_source_id bigint not null references advertising_data_source(id),
     campaign_id bigint not null references advertising_campaign(id),
     clicks int not null default 0,

@@ -4,41 +4,38 @@ import com.dgs.advertisingdata.config.DbConfig
 import com.dgs.advertisingdata.model.AdvertisingCampaign
 import com.dgs.advertisingdata.model.AdvertisingDataSource
 import com.dgs.advertisingdata.model.AdvertisingSample
-import com.dgs.advertisingdata.repositories.AdvertisingRepository
+import com.dgs.advertisingdata.repositories.AdvertisingCampaignRepository
+import com.dgs.advertisingdata.repositories.AdvertisingDataSourceRepository
+import com.dgs.advertisingdata.repositories.AdvertisingSampleRepository
 import org.jdbi.v3.sqlobject.kotlin.onDemand
+import org.jdbi.v3.sqlobject.transaction.Transaction
 import javax.inject.Singleton
 
 @Singleton
 class AdvertisingService constructor(dbConfig: DbConfig) {
     private val db = dbConfig.jdbi
 
-    fun saveDataSource(dataSource: AdvertisingDataSource): Long? {
-        return try {
-            db.onDemand<AdvertisingRepository>().saveDataSource(dataSource)
-        } catch (e: Exception) {
-            null
-        }
+    @Transaction
+    fun saveDataSource(dataSource: AdvertisingDataSource): AdvertisingDataSource {
+        val dao = db.onDemand<AdvertisingDataSourceRepository>()
+        dao.save(dataSource)
+        return dao.findByName(dataSource.name)!!
     }
     
-    fun saveCampaign(campaign: AdvertisingCampaign): Long? {
-        return try {
-            db.onDemand<AdvertisingRepository>().saveCampaign(campaign)
-        } catch (e: Exception) {
-            null
-        }
+    @Transaction
+    fun saveCampaign(campaign: AdvertisingCampaign): AdvertisingCampaign {
+        val dao = db.onDemand<AdvertisingCampaignRepository>()
+        dao.save(campaign)
+        return dao.findByName(campaign.name)!!
     }
 
     fun saveSample(sample: AdvertisingSample): Long? {
-        return try {
-            db.onDemand<AdvertisingRepository>().saveSample(sample)
-        } catch (e: Exception) {
-            null
-        }
+        return db.onDemand<AdvertisingSampleRepository>().save(sample)
     }
     
     fun getDataSources(): List<AdvertisingDataSource> {
         return try {
-            db.onDemand<AdvertisingRepository>().findAllDataSources()
+            db.onDemand<AdvertisingDataSourceRepository>().findAll()
         } catch (e: Exception) {
             emptyList()
         }

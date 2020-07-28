@@ -14,3 +14,6 @@ flyway:
     default:
       enabled: true
       location: classpath:db/migration
+      
+advertising-data-source:
+  uri: http://adverity-challenge.s3-website-eu-west-1.amazonaws.com/DAMKBAoDBwoDBAkOBAYFCw.csv
