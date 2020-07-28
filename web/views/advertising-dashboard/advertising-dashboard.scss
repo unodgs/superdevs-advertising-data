@@ -1,0 +1,14 @@
+.advertising-dashboard {
+  display: flex;
+  min-height: 400px;
+  flex-direction: row;
+  
+  > div {
+    margin-top: 10px;
+    margin-left: 10px;
+    
+    &:last-child {
+      margin-right: 10px;
+    }
+  }
+}

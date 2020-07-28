@@ -4,6 +4,10 @@ const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
+const dotenv = require('dotenv').config({
+    path: __dirname + '/.env'
+});
+
 const makeConfig = productionMode => ({
     devtool: "source-map",
     entry: {
@@ -34,6 +38,9 @@ const makeConfig = productionMode => ({
             template: './web/index.ejs',
             filename: 'index.html',
             inject: true
+        }),
+        new webpack.DefinePlugin({
+            env: JSON.stringify(dotenv.parsed)
         })
     ],
     module: {
@@ -70,7 +77,7 @@ const makeConfig = productionMode => ({
         disableHostCheck: true,
         historyApiFallback: true,
         proxy: {
-            '/api': {
+            '/advertising': {
                 target: 'http://localhost:8085',
                 changeOrigin: true,
                 logLevel: 'debug'

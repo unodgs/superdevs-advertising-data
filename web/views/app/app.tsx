@@ -9,12 +9,14 @@ import { AppHeader } from "./app-header/app-header";
 import { AppContent } from "./app-content/app-content";
 
 import "./app.scss";
+import { GlobalLoader } from "../../components/global-loader/global-loader";
 
 export const App = (props: { services: ServiceRepository, queryConfig: ReactQueryProviderConfig }) => {
     return <ReactQueryConfigProvider config={props.queryConfig}>
         <ServicesContext.Provider value={props.services}>
             <div className="app">
                 <AppHeader/>
+                <GlobalLoader/>
                 <AppContent>
                     <AdvertisingDashboard/>
                 </AppContent>

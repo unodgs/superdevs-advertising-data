@@ -1,12 +1,15 @@
 import Axios, { AxiosInstance } from "axios"
 import { Campaign, DataSample, DataSource } from "../../models/advertising.model";
 
+declare var env: any;
+
 export class AdvertisingApiService {
   #serversApi: AxiosInstance
 
   constructor() {
+    console.log("API", env.SERVER_API_URL);
     this.#serversApi = Axios.create({
-      baseURL: process.env.SERVER_API_URL + "/advertising"
+      baseURL: env.SERVER_API_URL + "/advertising"
     })
   }
 
@@ -17,16 +20,16 @@ export class AdvertisingApiService {
       .catch(() => [])
   }
 
-  getCampaigns(dataSourceId: number): Promise<Campaign[]> {
+  getCampaigns(dataSourceIds: number[]): Promise<Campaign[]> {
     return this.#serversApi
-      .get<Campaign[]>(`/campaigns/${dataSourceId}`)
+      .get<Campaign[]>(`/campaigns?dataSourceIds=${dataSourceIds.join(',')}`)
       .then(res => res.data)
       .catch(() => [])
   }
   
   getDataSamples(campaignIds: number[]): Promise<DataSample[]> {
     return this.#serversApi
-        .get<DataSample[]>(`/data-samples`)
+        .get<DataSample[]>(`/data-samples?campaignIds=${campaignIds.join(',')}`)
         .then(res => res.data)
         .catch(() => [])
   }
