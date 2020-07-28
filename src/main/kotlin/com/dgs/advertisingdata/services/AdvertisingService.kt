@@ -40,4 +40,12 @@ class AdvertisingService constructor(dbConfig: DbConfig) {
             emptyList()
         }
     }
+    
+    fun getCampaigns(dataSourceId: Long): List<AdvertisingCampaign> {
+        return try {
+            db.onDemand<AdvertisingCampaignRepository>().findAllByDataSource(dataSourceId)
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
 }

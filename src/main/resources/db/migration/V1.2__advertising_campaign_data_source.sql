@@ -1,0 +1,1 @@
+alter table advertising_campaign add column data_source_id bigint not null;

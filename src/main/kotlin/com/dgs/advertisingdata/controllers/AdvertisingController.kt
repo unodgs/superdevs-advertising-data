@@ -1,5 +1,7 @@
 package com.dgs.advertisingdata.controllers
 
+import com.dgs.advertisingdata.model.AdvertisingCampaign
+import com.dgs.advertisingdata.model.AdvertisingDataSource
 import com.dgs.advertisingdata.services.AdvertisingService
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Controller
@@ -11,14 +13,13 @@ class AdvertisingController(
     private val advertisingService: AdvertisingService
     ) {
     
-    
     @Get("/data-sources", produces = [MediaType.APPLICATION_JSON])
-    fun getDataSources(): Any {
+    fun getDataSources(): List<AdvertisingDataSource> {
         return advertisingService.getDataSources()
     }
 
     @Get("/campaigns/{dataSourceId}", produces = [MediaType.APPLICATION_JSON])
-    fun getCampaigns(@QueryValue dataSourceId: Long): Any {
-        return 0
+    fun getCampaigns(@QueryValue dataSourceId: Long): List<AdvertisingCampaign> {
+        return advertisingService.getCampaigns(dataSourceId)
     }
 }

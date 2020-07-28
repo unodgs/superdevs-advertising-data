@@ -45,10 +45,10 @@ class DownloadScheduler constructor(
                     if (csvDataSource != null && csvCampaign != null && csvDate != null && csvClicks != null && csvImpressions != null) {
     
                         val dataSource = advertisingService.saveDataSource(
-                            AdvertisingDataSource(name = csvDataSource, id = null)
+                            AdvertisingDataSource(name = csvDataSource, id = 0)
                         )
                         val campaign = advertisingService.saveCampaign(
-                            AdvertisingCampaign(name = csvCampaign, id = null)
+                            AdvertisingCampaign(name = csvCampaign, id = 0, dataSourceId = dataSource.id)
                         )
                         val sampleDate = LocalDate.parse(csvDate, csvDatePattern)
                         
@@ -57,6 +57,7 @@ class DownloadScheduler constructor(
     
                         advertisingService.saveSample(
                             AdvertisingSample(
+                                0,
                                 sampleDate,
                                 dataSource, campaign,
                                 clicks,
