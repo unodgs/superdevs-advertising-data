@@ -1,6 +1,6 @@
 package com.dgs.advertisingdata.repositories
 
-import com.dgs.advertisingdata.model.AdvertisingDataSource
+import com.dgs.advertisingdata.models.db.AdvertisingDataSource
 import org.jdbi.v3.sqlobject.config.RegisterConstructorMapper
 import org.jdbi.v3.sqlobject.statement.SqlQuery
 import org.jdbi.v3.sqlobject.statement.SqlUpdate

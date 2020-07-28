@@ -1,8 +1,8 @@
 package com.dgs.advertisingdata.schdulers
 
-import com.dgs.advertisingdata.model.AdvertisingCampaign
-import com.dgs.advertisingdata.model.AdvertisingDataSource
-import com.dgs.advertisingdata.model.AdvertisingSample
+import com.dgs.advertisingdata.models.db.AdvertisingCampaign
+import com.dgs.advertisingdata.models.db.AdvertisingDataSource
+import com.dgs.advertisingdata.models.db.AdvertisingSample
 import com.dgs.advertisingdata.services.AdvertisingService
 import com.dgs.advertisingdata.services.CsvParserService
 import com.dgs.advertisingdata.services.DownloadService
@@ -29,7 +29,7 @@ class DownloadScheduler constructor(
         
         log.info("Downloading {}", fileUri)
         
-        downloadService.downloadFile(fileUri).subscribe { csvData ->
+        downloadService.downloadFile(fileUri).subscribe par@{ csvData ->
             log.info("Parsing csv file...")
     
             val csvDatePattern = DateTimeFormatter.ofPattern("dd.MM.yyyy")
@@ -76,7 +76,7 @@ class DownloadScheduler constructor(
                     skippedLines += 1
                 }
             }
-            
+
             log.info("Imported {} lines, skipped {}", importedLines, skippedLines)
         }
     }

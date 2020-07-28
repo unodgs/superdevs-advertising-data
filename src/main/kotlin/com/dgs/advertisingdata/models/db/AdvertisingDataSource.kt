@@ -1,4 +1,4 @@
-package com.dgs.advertisingdata.model
+package com.dgs.advertisingdata.models.db
 
 data class AdvertisingDataSource(
     val id: Long,

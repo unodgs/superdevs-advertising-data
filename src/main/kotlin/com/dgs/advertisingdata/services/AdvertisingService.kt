@@ -1,19 +1,24 @@
 package com.dgs.advertisingdata.services
 
 import com.dgs.advertisingdata.config.DbConfig
-import com.dgs.advertisingdata.model.AdvertisingCampaign
-import com.dgs.advertisingdata.model.AdvertisingDataSource
-import com.dgs.advertisingdata.model.AdvertisingSample
+import com.dgs.advertisingdata.models.dto.DateSampleDto
+import com.dgs.advertisingdata.models.db.AdvertisingCampaign
+import com.dgs.advertisingdata.models.db.AdvertisingDataSource
+import com.dgs.advertisingdata.models.db.AdvertisingSample
 import com.dgs.advertisingdata.repositories.AdvertisingCampaignRepository
 import com.dgs.advertisingdata.repositories.AdvertisingDataSourceRepository
 import com.dgs.advertisingdata.repositories.AdvertisingSampleRepository
 import org.jdbi.v3.sqlobject.kotlin.onDemand
 import org.jdbi.v3.sqlobject.transaction.Transaction
+import org.slf4j.LoggerFactory
+import java.time.LocalTime
+import java.time.ZoneOffset
 import javax.inject.Singleton
 
 @Singleton
 class AdvertisingService constructor(dbConfig: DbConfig) {
     private val db = dbConfig.jdbi
+    private val log = LoggerFactory.getLogger(javaClass)
 
     @Transaction
     fun saveDataSource(dataSource: AdvertisingDataSource): AdvertisingDataSource {
@@ -34,18 +39,22 @@ class AdvertisingService constructor(dbConfig: DbConfig) {
     }
     
     fun getDataSources(): List<AdvertisingDataSource> {
-        return try {
-            db.onDemand<AdvertisingDataSourceRepository>().findAll()
-        } catch (e: Exception) {
-            emptyList()
-        }
+        return db.onDemand<AdvertisingDataSourceRepository>().findAll()
     }
     
     fun getCampaigns(dataSourceId: Long): List<AdvertisingCampaign> {
-        return try {
-            db.onDemand<AdvertisingCampaignRepository>().findAllByDataSource(dataSourceId)
-        } catch (e: Exception) {
-            emptyList()
-        }
+        return db.onDemand<AdvertisingCampaignRepository>().findAllByDataSource(dataSourceId)
+    }
+    
+    fun getDataSamples(campaignIds: List<Long>): List<DateSampleDto> {
+        return db.onDemand<AdvertisingSampleRepository>()
+            .findSumsByCampaigns(campaignIds)
+            .map {
+                DateSampleDto(
+                    it.sampleDate.toEpochSecond(LocalTime.MIN, ZoneOffset.UTC),
+                    it.clicks,
+                    it.impressions
+                )
+            }
     }
 }

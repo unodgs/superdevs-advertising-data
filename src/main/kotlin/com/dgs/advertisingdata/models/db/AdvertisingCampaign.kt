@@ -1,4 +1,4 @@
-package com.dgs.advertisingdata.model
+package com.dgs.advertisingdata.models.db
 
 data class AdvertisingCampaign(
     val id: Long,
