@@ -1,5 +1,5 @@
 import Axios, { AxiosInstance } from "axios"
-import { Campaign, DataSample, DataSource } from "../../models/advertising.model";
+import { Campaign, DateSample, DataSource } from "../../models/advertising.model";
 
 declare var env: any;
 
@@ -27,9 +27,9 @@ export class AdvertisingApiService {
       .catch(() => [])
   }
   
-  getDataSamples(campaignIds: number[]): Promise<DataSample[]> {
+  getDateSamples(campaignIds: number[]): Promise<DateSample[]> {
     return this.#serversApi
-        .get<DataSample[]>(`/data-samples?campaignIds=${campaignIds.join(',')}`)
+        .post<DateSample[]>(`/date-samples`, campaignIds)
         .then(res => res.data)
         .catch(() => [])
   }

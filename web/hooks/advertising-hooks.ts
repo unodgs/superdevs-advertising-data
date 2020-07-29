@@ -29,6 +29,19 @@ export function useCampaignsQuery(dataSourceIds: number[]) {
     return { campaigns: data, isLoading }
 }
 
+export function useDateSamplesQuery(campaignIds: number[]) {
+    const { advertisingApiService } = React.useContext(ServicesContext)!
+    
+    const { data, isLoading } = useQuery(
+        `date-samples-${campaignIds.join(':')}`,
+        async () => {
+            return await advertisingApiService.getDateSamples(campaignIds)
+        }
+    )
+
+    return { dateSamples: data, isLoading }
+}
+
 // export function useRebootedServerStatusRefreshQuery(server) {
 //   const { serverApiService, serverStatusService } = React.useContext(
 //     ServicesContext

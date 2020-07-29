@@ -8,8 +8,8 @@ export interface DataSource {
     name: string
 }
 
-export interface DataSample {
-    sampleDate: number,
+export interface DateSample {
+    sampleDate: string,
     clicks: number,
     impressions: number
 }

@@ -8,8 +8,9 @@ import { AdvertisingDashboard } from "../advertising-dashboard/advertising-dashb
 import { AppHeader } from "./app-header/app-header";
 import { AppContent } from "./app-content/app-content";
 
-import "./app.scss";
 import { GlobalLoader } from "../../components/global-loader/global-loader";
+
+import "./app.scss";
 
 export const App = (props: { services: ServiceRepository, queryConfig: ReactQueryProviderConfig }) => {
     return <ReactQueryConfigProvider config={props.queryConfig}>

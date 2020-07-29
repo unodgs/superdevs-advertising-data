@@ -13,3 +13,4 @@ out/
 .classpath
 node_modules/
 dist/
+*.log

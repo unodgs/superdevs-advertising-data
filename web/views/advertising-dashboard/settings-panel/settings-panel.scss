@@ -1,7 +1,12 @@
 @import "../../../styles/theme";
 
 .settings-panel {
-  background-color: yellow;
-  height: 300px;
   flex: 0 0 30%;
+  padding: 20px;
+  border: 2px solid $mainColor;
+  border-radius: 5px;
+  
+  .settings-panel-campaigns {
+    margin-top: 30px;
+  }
 }

@@ -1,53 +1,68 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
-import "./settings-panel.scss";
 import { useCampaignsQuery, useDataSourcesQuery } from "../../../hooks/advertising-hooks";
+import { Campaign, DataSource } from "../../../models/advertising.model";
 
-type OptionRecord = { value: number, label: string }
+import "./settings-panel.scss";
 
-export const SettingsPanel = () => {
-    const [selectedDataSources, setSelectedDataSources] = useState([] as OptionRecord[]);
-    const [selectedCampaigns, setSelectedCampaigns] = useState([] as OptionRecord[]);
+export const SettingsPanel: React.FC<{onChange: (campaigns: number[]) => void}> = ({ onChange }) => {
+    const [selectedDataSources, setSelectedDataSources] = useState<DataSource[]>([]);
+    const [selectedCampaigns, setSelectedCampaigns] = useState<Campaign[]>([]);
     
-    const { dataSources, isLoading: dataSourcesLoading } = useDataSourcesQuery();
-    const { campaigns, isLoading: campaignsLoading } = useCampaignsQuery(selectedDataSources.map(ds => ds.value));
+    const { dataSources, isLoading: dataSourcesLoading } =
+        useDataSourcesQuery();
     
-    const dataSourcesOptions = dataSourcesLoading
-        ? []
-        : dataSources!.map(ds => ({
-            value: ds.id,
-            label: ds.name
-        }));
+    const { campaigns, isLoading: campaignsLoading } =
+        useCampaignsQuery((selectedDataSources || []).map(ds => ds.id));
     
-    const campaignsOptions = campaignsLoading
-        ? []
-        : campaigns!.map(c => ({
-            value: c.id,
-            label: c.name
-        }));
+    useEffect(() => {
+        const samplesCampaigns = selectedCampaigns?.length > 0 
+            ? selectedCampaigns
+            : (campaigns ? campaigns : [])
+        
+        onChange(samplesCampaigns.map(c => c.id));
+    }, [campaigns, selectedCampaigns])
     
     const animatedComponents = makeAnimated();
     
     return <div className="settings-panel">
-        <label>Data source</label>
-        <Select
-            closeMenuOnSelect={false}
-            components={animatedComponents}
-            defaultValue={selectedDataSources}
-            isMulti={true}
-            options={dataSourcesOptions}
-            onChange={dataSources => setSelectedDataSources(dataSources as OptionRecord[])}
-        />
-        <label>Campaigns</label>
-        <Select
-            closeMenuOnSelect={false}
-            components={animatedComponents}
-            defaultValue={[]}
-            isMulti={true}
-            options={campaignsOptions}
-            onChange={campaigns => setSelectedDataSources(campaigns as OptionRecord[])}
-        />
+        <div className="settings-panel-data-sources">
+            <label>Data sources</label>
+            <Select
+                placeholder="All"
+                getOptionLabel={v => v.name}
+                getOptionValue={v => v.id}
+                isDisabled={dataSourcesLoading}
+                isLoading={dataSourcesLoading}
+                closeMenuOnSelect={true}
+                components={animatedComponents}
+                defaultValue={selectedDataSources}
+                isMulti={true}
+                options={dataSources}
+                onChange={dataSources => {
+                    setSelectedDataSources(dataSources as DataSource[]);
+                }}
+            />
+        </div>
+        <div className="settings-panel-campaigns">
+            <label>Campaigns</label>
+            <Select
+                placeholder="All"
+                getOptionLabel={v => v.name}
+                getOptionValue={v => v.id}
+                isDisabled={campaignsLoading}
+                isLoading={campaignsLoading}
+                closeMenuOnSelect={true}
+                components={animatedComponents}
+                defaultValue={selectedCampaigns}
+                isMulti={true}
+                options={campaigns}
+                onChange={campaigns => {
+                    setSelectedCampaigns(campaigns as Campaign[]);
+                }}
+            />
+        </div>
     </div>;
 }

@@ -1,7 +1,9 @@
 @import "../../../styles/theme";
 
 .chart-panel {
-  background-color: red;
-  height: 300px;
+  background-color: transparent;
   flex-grow: 1;
+  border: 2px solid $mainColor;
+  border-radius: 5px;
+  padding: 10px;
 }
