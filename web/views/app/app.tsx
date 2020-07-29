@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ReactQueryConfigProvider, ReactQueryProviderConfig } from "react-query";
+import { ReactQueryConfigProvider, ReactQueryProviderConfig, useIsFetching } from "react-query";
 import { ServiceRepository } from "../../services/services"
 import { ServicesContext } from "../../contexts/services-context/services.context";
 import { AdvertisingDashboard } from "../advertising-dashboard/advertising-dashboard";
@@ -17,7 +17,7 @@ export const App = (props: { services: ServiceRepository, queryConfig: ReactQuer
         <ServicesContext.Provider value={props.services}>
             <div className="app">
                 <AppHeader/>
-                <GlobalLoader/>
+                <GlobalLoader enabled={useIsFetching() > 0}/>
                 <AppContent>
                     <AdvertisingDashboard/>
                 </AppContent>

@@ -57,7 +57,7 @@ export const ChartPanel: React.FC<{ campaignIds: number[] }> = ({ campaignIds })
         [dateSamples]
     );
     
-    return <div className="chart-panel">
+    return <div className="chart-panel" data-testid="chart-panel">
         <Line data={clicksData} options={options}/>
         <Line data={impressionsData} options={options}/>
     </div>;

@@ -1,11 +1,9 @@
 import React from "react"
-import { useIsFetching } from "react-query"
 import "./global-loader.scss"
 
-export const GlobalLoader = () => {
-  const enabled = useIsFetching() > 0
+export const GlobalLoader: React.FC<{ enabled: boolean }> = ({ enabled  }) => {
   return enabled ? (
-    <div className="progress">
+    <div className="progress" data-testid="global-loader">
       <div className="indeterminate" />
     </div>
   ) : null
