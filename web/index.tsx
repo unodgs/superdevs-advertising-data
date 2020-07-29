@@ -16,11 +16,9 @@ const queryConfig = {
 }
 
 ReactDOM.render(
-    <React.StrictMode>
-        <App
-            services={services}
-            queryConfig={queryConfig}
-        />
-    </React.StrictMode>,
+    <App
+        services={services}
+        queryConfig={queryConfig}
+    />,
     document.getElementById('root')
 );
