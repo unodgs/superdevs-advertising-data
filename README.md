@@ -1,24 +1,34 @@
-## Feature http-client documentation
+## How to run
 
-- [Micronaut Micronaut HTTP Client documentation](https://docs.micronaut.io/latest/guide/index.html#httpClient)
+### Backend
+`./gradlew run`
 
-## Feature flyway documentation
+### Frontend
+`./yarn install` or `npm install`
 
-- [Micronaut Flyway Database Migration documentation](https://micronaut-projects.github.io/micronaut-flyway/latest/guide/index.html)
+`./yarn test` or `npm run test`
 
-- [https://flywaydb.org/](https://flywaydb.org/)
+`./yarn dev` or `npm run dev`
 
-## Feature sql-jdbi documentation
+go to `http://localhost:8080`
 
-- [Micronaut Jdbi documentation](https://micronaut-projects.github.io/micronaut-sql/latest/guide/index.html#jdbi)
+you should see following screen:
 
-## Feature jackson-xml documentation
+![screenshot](./advertising-vis.png)
 
-- [Micronaut Jackson XML serialization/deserialization documentation](https://micronaut-projects.github.io/micronaut-jackson-xml/latest/guide/index.html)
+## Remarks
 
-- [https://github.com/FasterXML/jackson-dataformat-xml](https://github.com/FasterXML/jackson-dataformat-xml)
+Backend is written in **Kotlin** with micronaut framework. It uses h2 in memory database to store advertising cvs file. Csv file is downloaded **5 seconds** after backend is ready to process requests. You can ovbserve downloading and parsing progress in the console. H2 databse is used for retriving data in optimal way. One could do that by hand by it's a lot easier and readable to pass it to the database engine.
 
-## Feature jdbc-hikari documentation
+I used [JDBI](https://jdbi.org/) as db access layer. There is not security involved as this is beyond of the scope of this task but normally I would use jwt with refresh tokens.
 
-- [Micronaut Hikari JDBC Connection Pool documentation](https://micronaut-projects.github.io/micronaut-sql/latest/guide/index.html#jdbc)
+Frontend is built with **Typescript**. I used sass for styling and I resigned from scoped (css modules) intentionaly for code simplicity. To communicate with the backend I used [React Query](https://github.com/tannerlinsley/react-query) (it also can be used as redux replacement in simpler apps) and [Axios](https://github.com/axios/axios). Charts are being rendered by [React-Chartjs](https://github.com/jerairrest/react-chartjs-2) (wrapper around https://www.chartjs.org/). Unforunatelly I wasn't be able to create two data series with separate y axis on one chart due to chartjs's scaling bug. Axes were drawn correctly but the second line was not scaled accordingly and painted outside the graph area.
+I also used [React Select](https://react-select.com/home) for multiple select drop down.
+
+Hope you like it :)
+
+
+
+
+
 
