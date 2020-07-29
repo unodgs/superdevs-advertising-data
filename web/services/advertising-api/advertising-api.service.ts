@@ -7,7 +7,6 @@ export class AdvertisingApiService {
   #serversApi: AxiosInstance
 
   constructor() {
-    console.log("API", env.SERVER_API_URL);
     this.#serversApi = Axios.create({
       baseURL: env.SERVER_API_URL + "/advertising"
     })
