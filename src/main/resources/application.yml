@@ -4,6 +4,7 @@ micronaut:
   
   server:
     port: 8085
+    max-request-size: 104857600 
 
 datasources:
   default:
