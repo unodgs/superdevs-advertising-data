@@ -5,9 +5,8 @@ import com.dgs.advertisingdata.models.dto.DataSourceDto
 import com.dgs.advertisingdata.models.dto.DateSampleDto
 import com.dgs.advertisingdata.services.AdvertisingDataService
 import io.micronaut.http.MediaType
-import io.micronaut.http.annotation.Controller
-import io.micronaut.http.annotation.Get
-import io.micronaut.http.annotation.QueryValue
+import io.micronaut.http.annotation.*
+import javax.annotation.Nullable
 
 @Controller("/advertising")
 class AdvertisingController(
@@ -22,14 +21,14 @@ class AdvertisingController(
     }
 
     @Get("/campaigns", produces = [MediaType.APPLICATION_JSON])
-    fun getCampaigns(@QueryValue dataSourceIds: List<Long>): List<CampaignDto> {
+    fun getCampaigns(@Nullable @QueryValue dataSourceIds: List<Long>?): List<CampaignDto> {
         return advertisingDataService.getCampaigns(dataSourceIds).map {
             CampaignDto(it.id, it.name)
         }
     }
     
-    @Get("/data-samples", produces = [MediaType.APPLICATION_JSON])
-    fun getDataSamples(@QueryValue campaignIds: List<Long>): List<DateSampleDto> {
-        return advertisingDataService.getDataSamples(campaignIds)
+    @Post("/date-samples", produces = [MediaType.APPLICATION_JSON])
+    fun getDateSamples(@Nullable @Body campaignIds: List<Long>?): List<DateSampleDto> {
+        return advertisingDataService.getDateSamples(campaignIds)
     }
 }

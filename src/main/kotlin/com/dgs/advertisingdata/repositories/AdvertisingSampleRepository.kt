@@ -27,5 +27,14 @@ interface AdvertisingSampleRepository {
     @RegisterConstructorMapper(DateSample::class)
     fun findSumsByCampaigns(@BindList("campaignIds") campaignIds: List<Long>): List<DateSample>
 
+    @SqlQuery("""
+        select sample_date, sum(clicks) as clicks, sum(impressions) as impressions
+          from advertising_sample
+      group by sample_date
+      order by sample_date
+    """)
+    @RegisterConstructorMapper(DateSample::class)
+    fun findAllSums(): List<DateSample>
+
 }
 

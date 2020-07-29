@@ -13,6 +13,7 @@ import org.jdbi.v3.sqlobject.transaction.Transaction
 import org.slf4j.LoggerFactory
 import java.time.LocalTime
 import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import javax.inject.Singleton
 
 @Singleton
@@ -42,19 +43,28 @@ class AdvertisingDataService constructor(dbConfig: DbConfig) {
         return db.onDemand<AdvertisingDataSourceRepository>().findAll()
     }
     
-    fun getCampaigns(dataSourceIds: List<Long>): List<AdvertisingCampaign> {
-        return db.onDemand<AdvertisingCampaignRepository>().findAllByDataSources(dataSourceIds)
+    fun getCampaigns(dataSourceIds: List<Long>?): List<AdvertisingCampaign> {
+        val dao = db.onDemand<AdvertisingCampaignRepository>()
+        return if (dataSourceIds.isNullOrEmpty())
+            dao.findAll()
+        else
+            dao.findAllByDataSources(dataSourceIds)
     }
     
-    fun getDataSamples(campaignIds: List<Long>): List<DateSampleDto> {
-        return db.onDemand<AdvertisingSampleRepository>()
-            .findSumsByCampaigns(campaignIds)
-            .map {
-                DateSampleDto(
-                    it.sampleDate.toEpochSecond(LocalTime.MIN, ZoneOffset.UTC),
-                    it.clicks,
-                    it.impressions
-                )
-            }
+    fun getDateSamples(campaignIds: List<Long>?): List<DateSampleDto> {
+        val dao = db.onDemand<AdvertisingSampleRepository>()
+
+        val samples = if (campaignIds.isNullOrEmpty())
+            dao.findAllSums()
+        else
+            dao.findSumsByCampaigns(campaignIds)
+                
+        return samples.map {
+            DateSampleDto(
+                it.sampleDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
+                it.clicks,
+                it.impressions
+            )
+        }
     }
 }

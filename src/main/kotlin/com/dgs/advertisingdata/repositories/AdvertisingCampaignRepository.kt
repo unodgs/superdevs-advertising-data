@@ -1,7 +1,6 @@
 package com.dgs.advertisingdata.repositories
 
 import com.dgs.advertisingdata.models.db.AdvertisingCampaign
-import com.dgs.advertisingdata.models.db.AdvertisingDataSource
 import org.jdbi.v3.sqlobject.config.RegisterConstructorMapper
 import org.jdbi.v3.sqlobject.customizer.BindList
 import org.jdbi.v3.sqlobject.statement.SqlQuery
@@ -23,10 +22,10 @@ interface AdvertisingCampaignRepository {
     """)
     @RegisterConstructorMapper(AdvertisingCampaign::class)
     fun findAllByDataSources(@BindList("dataSourceIds") dataSourceIds: List<Long>): List<AdvertisingCampaign>
-
+    
     @SqlQuery("select id, data_source_id, name from advertising_campaign order by name")
     @RegisterConstructorMapper(AdvertisingCampaign::class)
-    fun findAll(): List<AdvertisingDataSource>
+    fun findAll(): List<AdvertisingCampaign>
 
     @SqlUpdate("delete from advertising_campaign")
     fun removeAll()
